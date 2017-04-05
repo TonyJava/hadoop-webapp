@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>spark</title>
+   <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+   <script src="/static/js/jquery.min.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){
+      var url = "https://110.360.cn/interface/search?timeout=5000&type=phone&q=13181220973"
+      $("#msubmit").click(function(){
+     /*   var content = $("#content").val();
+ 
+        $.post("content/",{'content':content}, function(ret){
+            $('#result').html(ret)
+        })*/
+        var data= $.trim($("#check").val());
+        var type = "phone";
+        $.ajax({
+    url:"//txwz.qq.com/lib/index.php?m=check&a=run",
+    data:{keys:data,action:type,time:(new Date()).getTime()},
+    dataType:"jsonp",
+    async:true
+  }).done(function(data){
+    if(data['reCode'] == 0){
+      switch (type){
+        case "phone":
+          tableTel(data);
+          break;
+        case "url":
+          
+          break;
+        case "bank":
+          
+          break;
+      }
+      
+    }else if(data['reCode'] == -200){
+      
+      $(".check_error").show().html("请输入正确的电话号码、银行卡号、网址链接！");
+    }else if(data['reCode'] == -100){
+      
+      $(".check_error").show().html("已经超过每天最大查询次数或查询失败，请稍后再试！");
+    }
+  }).error(function(){
+    
+    $(".check_error").show().html("已经超过每天最大查询次数或查询失败，请稍后再试！");
+  })
+      });
+      function checkempty(data){
+  if(data==undefined || data=="" || data ==0){
+    return true;
+  }else{
+    return false;
+  }
+}
+function tableTel(data) {
+  $("#info1,#info2,#info3").empty();
+  
+  if(checkempty(data['region'])){
+  }else{
+    $("#info3").show().html('<td width="25%">号码归属地</td><td>'+data['region']+'</td>');
+  }
+  $("#info1").html('<td width="25%">查询信息</td><td>'+data['data']+'</td>');
+  
+  var ret="";
+  if (data['iy'] == 0) {
+    if(data['uType']==0){ //标准型     
+      $("#info2").html('<td width="25%">查询结果</td><td>'+data['yName']+'</td>');
+    }else{
+      $("#info2").html('<td width="25%">查询结果</td><td>'+data['yName']+'(举报情况：'+data['uTagC']+')</td>');
+    }
+  } else {
+    if(!checkempty(data['uTagC'])){
+      $("#info2").html('<td width="25%">查询结果</td><td>'+data['uTagC']+'</td>');
+    }else{
+      $("#info2").html('<td width="25%">查询结果</td><td>安全状态未知</td>');
+    }
+  }
+}
+
+      
+    });
+
+   </script>
+</head>
+<body>
+
+
+<div class="row">
+  <br>
+  <br>
+  <br>
+  <div class="col-md-1"></div>
+  <div class="col-md-5">
+  <form id="message" method="post">
+  <label >提交诈骗号码</label>
+  <input type="text" name="check" id="check" class="form-control" placeholder="Text input">
+    <br>
+  <button type="button" id="msubmit" class="btn btn-default">Submit</button>
+  </form>
+  </div>
+  <div class="col-md-5">
+    <p>result:
+     <br>
+     <span id='result'></span></p>
+     <div class="check_error" style="top: 86px; display: none;"></div>
+     <div id="ret_suc" class="result" style="display: block;">
+          <table width="0" border="0">
+              <tbody><tr>
+                <td colspan="2">查询结果：</td>
+              </tr>
+              <tr id="info1"></tr>
+              <tr id="info2"></tr>
+              <tr id="info3" style="display: table-row;"></tr>
+              <tr>
+                <td colspan="2"><a class="report_btn" href="http://txwz.qq.com/jubao-tel.html" target="_blank">我要举报</a></td>
+              </tr>
+            </tbody></table>
+        </div>
+  </div>
+  
+ 
+  <div class="col-md-1"></div>
+  
+</div>
+
+</body>
+</html>

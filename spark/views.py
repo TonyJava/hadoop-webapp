@@ -10,6 +10,9 @@ import time
 def index(request):
     return render(request, 'index.html')
 
+def check(request):
+	return render(request, 'check.html')
+
 def content(request):
     fname = str(uuid.uuid1())
     f = codecs.open('D:/'+fname+'.txt','w','utf-8')
