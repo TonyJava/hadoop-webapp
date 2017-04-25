@@ -10,7 +10,10 @@
       $("#msubmit").click(function(){
         var content = $("#content").val();
  
-        $.post("content/",{'content':content}, function(ret){
+      /*  $.post("content/",{'content':content}, function(ret){
+            $('#result').html(ret)
+        })*/
+        $.post("sms/",{'sms':content}, function(ret){
             $('#result').html(ret)
         })
       });

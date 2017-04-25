@@ -6,7 +6,10 @@ from .models import message
 import codecs
 import uuid
 import time
+import fenci
+import spider
 # Create your views here.
+
 def index(request):
     return render(request, 'index.html')
 
@@ -33,3 +36,48 @@ def content(request):
     #name = "8ef636de-0ecb-11e7-b166-6002b4bf1daf"
 	#mdata = message.objects.create(filename=fname,content=content)
 	#mdata.save()
+
+def checkphone(request):
+    if request.method == 'POST':
+        phone = request.POST['phone']
+        result = "ok"
+    else:
+        phone = request.GET['phone']
+        result = spider.query_qq('phone', phone)
+        if result == 'notknown':
+            result = spider.query_360('phone', phone)
+    return HttpResponse(result)
+
+def checkphonecontent(request):
+    if request.method == 'POST':
+        phonecontent = request.POST['phonecontent']
+        result = "ok"
+    else:
+        phonecontent = request.GET['phonecontent']
+        result = "ok"
+    return HttpResponse(result)
+
+def checksms(request):
+    if request.method == 'POST':
+        sms = request.POST['sms']
+        result = fenci.fencisms(sms)
+        fname = str(uuid.uuid1())
+        f = codecs.open('D:/'+fname+'.txt','w','utf-8')
+        f.write(fname+","+result)
+        f.close()
+        mdata = message.objects.create(filename=fname,content=result)
+        mdata.save()
+        for num in range(1,5):
+            time.sleep(1)
+            try:
+                data = message.objects.get(filename = fname)
+            except message.DoesNotExist:
+                result = "noresult"
+            else:
+                result = data.filetype
+                break
+        #result = "ok"
+    else:
+        sms = request.GET['sms']
+        result = "ok"
+    return HttpResponse(result)
