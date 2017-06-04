@@ -8,14 +8,20 @@
    <script type="text/javascript">
      $(document).ready(function(){
       $("#msubmit").click(function(){
+        $('#result').html("")
         var content = $("#content").val();
  
-      /*  $.post("content/",{'content':content}, function(ret){
+       /* $.post("content/",{'content':content}, function(ret){
             $('#result').html(ret)
         })*/
-        $.post("sms/",{'sms':content}, function(ret){
+
+        $.post("phonecontent/",{'phonecontent':content}, function(ret){
             $('#result').html(ret)
         })
+        
+       /* $.post("sms/",{'sms':content}, function(ret){
+            $('#result').html(ret)
+        })*/
       });
       
     });

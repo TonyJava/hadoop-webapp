@@ -15,3 +15,7 @@ class fraudphone(models.Model):
 	phonecontent = models.TextField()
 	phonefilename = models.CharField(max_length=100)
 	phonetype = models.IntegerField(default=2)   #0 - 诈骗电话 1 - 正常电话 2 - 不确定
+
+class spiderphone(models.Model):
+	phonenumber = models.CharField(max_length=50)
+	mark = models.CharField(max_length=100)

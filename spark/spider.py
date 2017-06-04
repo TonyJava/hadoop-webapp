@@ -3,7 +3,7 @@
 import re
 import json
 import time
-
+from .models import spiderphone
 import requests
 
 def query_360(qtype, q):
@@ -30,14 +30,6 @@ def query_360(qtype, q):
     else:
         return data.get('labels', [])[1]
 
-#labels = query_360('phone', '13102416011')
-#if labels == 'notknown':
-#    print '未知状态电话号码-360'
-#else:
-#    for label in labels:
-#        print u'被{0:3d}用户标记为 {1}, 数据来源 {2}'.format(label[u'labelNum'], label[u'label'], label[u'labelSrc'])
-
-
 def query_qq(qtype, q):
     data = {
         'm': 'check',
@@ -55,12 +47,13 @@ def query_qq(qtype, q):
     else:
         return "notknown"
 
-
-#r2 = query_qq('phone', '18362916020')
-#if r2 == 'notknown':
-#    print '未知状态的号码-qq'
-#else:
-#    print r2
-
-
-
+def phonetosql():
+    fphone = open("D:\\trainSet\\allspiderfraudphone.txt")
+    try:
+        phones = fphone.read()
+        phones = unicode(phones, 'utf8')
+    finally:
+        fphone.close()
+    for myword in phones.split("\n"):
+        phone = spiderphone.objects.create(phonenumber=myword)
+        phone.save()
