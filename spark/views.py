@@ -10,7 +10,6 @@ import time
 import fenci
 import spider
 import test_fraud
-# Create your views here.
 
 def index(request):
     return render(request, 'index.html')
@@ -51,7 +50,6 @@ def checkphonecontent(request):
         f = codecs.open('D:/trainSet/beiyesi/mytestphone/phone/fraudphone/phone.txt','w','utf-8')
         f.write(phonecontent)
         result = test_fraud.testphoneresult()
-        #test_fraud.deletephonefile()
     return HttpResponse(result)
 
 def checksms(request):
@@ -63,7 +61,6 @@ def checksms(request):
         f.write(sms)
         f.close()
         getresult = test_fraud.testsmsresult()
-        #test_fraud.deletesmsfile()
     return HttpResponse(getresult)
 
 def testphone(request):
@@ -125,7 +122,6 @@ def sparksms(request):
             else:
                 result = data.filetype
                 break
-        #result = "ok"
     else:
         sms = request.GET['sms']
         result = "ok"
